@@ -1,0 +1,17 @@
+/** {
+  padding: 10;
+  margin: 20;
+}*/
+
+/*creates the game canvas*/
+canvas {
+  /*background: #95c205;*/
+  background: white;
+  display: block;
+  margin: 0 auto;
+}
+
+/*background color*/
+body {
+  background: #eee;
+}
