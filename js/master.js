@@ -5,11 +5,17 @@ var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
 // define the staring point of the snake
-var x = canvas.width/2;
-var y = canvas.height/2;
+var snakeX = canvas.width/2;
+var snakeY = canvas.height/2;
 
-var dx = -1;
-var dy = 0;
+// var dx = -1;
+// var dy = 0;
+
+var snake;
+var snakeSize = 10;
+var snakeWidth = 350;
+var snakeHeight = 350;
+var food;
 
 var upPressed = false;
 var rightPressed = false;
@@ -23,7 +29,7 @@ function keyDownHandler(e) {
     if(e.keyCode === 37) {
       leftPressed = true;
     }
-    else if(e.keyCode == 38) {
+    else if(e.keyCode === 38) {
       upPressed = true;
     }
     else if (e.keyCode === 39) {
@@ -36,34 +42,57 @@ function keyDownHandler(e) {
 
 function keyUpHandler(e) {
     if(e.keyCode === 37) {
-      leftPressed = true;
+      leftPressed = false;
     }
-    else if(e.keyCode == 38) {
-      upPressed = true;
+    else if(e.keyCode === 38) {
+      upPressed = false;
     }
     else if (e.keyCode === 39) {
-      rightPressed = true;
+      rightPressed = false;
     }
     else if (e.keyCode === 40) {
-      downPressed = true;
+      downPressed = false;
     }
 }
 
+function snakeBody(x, y) {
+  ctx.fillStyle = "#42590C";
+  ctx.rect(snakeX, snakeY, snakeSize, snakeSize);
+  ctx.fill();
+}
 
 function drawSnake() {
-  ctx.beginPath();
-  ctx.rect(x, y, 10, 10);
-  ctx.fillStyle = "#42590C";
-  ctx.fill();
-  ctx.closePath();
+  // ctx.beginPath();
+  // ctx.rect(snakeX, snakeY, 10, 10);
+  // ctx.fillStyle = "#42590C";
+  // ctx.fill();
+  // ctx.closePath();
+  snake = [];
+  for (var i = 4; i > 0; i--) {
+    snake.push({snakeX:i, snakeY:0});
+  }
 }
 
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  snakeBody();
   drawSnake();
-  x += dx;
-  y += dy;
+
+  if(leftPressed) {
+    snakeX--;
+  }
+  else if(upPressed) {
+    snakeY--;
+  }
+  else if (rightPressed) {
+    snakeX++;
+  }
+  else if (downPressed) {
+    snakeY++;
+  }
+  // snakeX += dx;
+  // snakeY += dy;
 }
 
-setInterval(draw, 10);
+setInterval(draw, 50);
