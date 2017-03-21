@@ -131,7 +131,6 @@ function paint() {
         };
         score++;
 
-        //Create new food.
         createFood();
     } else {
         var tail = snake.pop();
