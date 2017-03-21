@@ -2,12 +2,13 @@
   padding: 10;
   margin: 20;
 }*/
-
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 /*creates the game canvas*/
 canvas {
   background: #95c205;
   display: block;
   margin: 0 auto;
+  
 }
 
 /*background color*/

@@ -6,54 +6,15 @@ var ctx = canvas.getContext('2d');
 
 var w = canvas.width;
 var h = canvas.height;
-// define the starting point of the snake
-// var snakeX = canvas.width/2;
-// var snakeY = canvas.height/2;
 
 var snake;
 var snakeSize = 10;
-// var dir = 'right';
+
 var food;
 var score = 0;
 
-// var upPressed = false;
-// var rightPressed = false;
-// var leftPressed = false;
-// var downPressed = false;
 var direction;
 
-// document.addEventListener("keydown", keyDownHandler, false);
-// document.addEventListener("keyup", keyUpHandler, false);
-//
-// function keyDownHandler(e) {
-//     if(e.keyCode === 37) {
-//       leftPressed = true;
-//     }
-//     else if(e.keyCode === 38) {
-//       upPressed = true;
-//     }
-//     else if (e.keyCode === 39) {
-//       rightPressed = true;
-//     }
-//     else if (e.keyCode === 40) {
-//       downPressed = true;
-//     }
-// }
-//
-// function keyUpHandler(e) {
-//     if(e.keyCode === 37) {
-//       leftPressed = false;
-//     }
-//     else if(e.keyCode === 38) {
-//       upPressed = false;
-//     }
-//     else if (e.keyCode === 39) {
-//       rightPressed = false;
-//     }
-//     else if (e.keyCode === 40) {
-//       downPressed = false;
-//     }
-// }
 
 function snakeBody(x, y) {
   ctx.beginPath();
@@ -63,14 +24,6 @@ function snakeBody(x, y) {
   ctx.closePath();
 }
 
-// var bodySnake = function(x, y) {
-//         // This is the single square
-//         ctx.fillStyle = 'green';
-//         ctx.fillRect(x*snakeSize, y*snakeSize, snakeSize, snakeSize);
-//         // This is the border of the square
-//         ctx.strokeStyle = 'darkgreen';
-//         ctx.strokeRect(x*snakeSize, y*snakeSize, snakeSize, snakeSize);
-//     }
 
 function drawSnake() {
   var length = 4;
@@ -80,78 +33,66 @@ function drawSnake() {
   }
 }
 
-// function food() {
-//   var foodX = Math.floor(Math.random());
-//   var foodY = Math.floor(Math.random());
-  // ctx.beginPath();
-  // ctx.rect(foodX, foodY, snakeSize, snakeSize);
-  // ctx.fillStyle = "red";
-  // ctx.fill();
-  // ctx.closePath();
-// }
 
-function pizza(x,y){
+function crumb(x,y){
   ctx.beginPath();
   ctx.rect(x*snakeSize, y*snakeSize, snakeSize, snakeSize);
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "#42590C";
   ctx.fill();
   ctx.closePath();
 }
 
+function scoreText() {
+  var score_text = "Score: " + score;
+  // ctx.fillStyle = 'blue';
+  ctx.font = '30 px Press Start 2P';
+  ctx.fillText(score_text, 2, 15);
+}
+
 var createFood = function() {
-          food = {
-            //Generate random numbers.
-            x: Math.floor((Math.random() * 30) + 1),
-            y: Math.floor((Math.random() * 30) + 1)
-        }
+  food = {
+    x: Math.floor((Math.random() * 30) + 1),
+    y: Math.floor((Math.random() * 30) + 1)
+}
 
-        //Look at the position of the snake’s body.
-        for (var i=0; i>snake.length; i++) {
-            var snakeX = snake[i].x;
-            var snakeY = snake[i].y;
+  for (var i=0; i>snake.length; i++) {
+      var snakeX = snake[i].x;
+      var snakeY = snake[i].y;
 
-             if (food.x===snakeX || food.y === snakeY || food.y === snakeY && food.x===snakeX) {
-                food.x = Math.floor((Math.random() * 30) + 1);
-                food.y = Math.floor((Math.random() * 30) + 1);
-            }
+       if (food.x===snakeX || food.y === snakeY || food.y === snakeY && food.x===snakeX) {
+          food.x = Math.floor((Math.random() * 30) + 1);
+          food.y = Math.floor((Math.random() * 30) + 1);
         }
     }
+}
 
 
 function checkCollision(x, y, array) {
-            for(var i = 0; i < array.length; i++) {
-                if(array[i].x === x && array[i].y === y)
-                return true;
-            }
-            return false;
-        }
+    for(var i = 0; i < array.length; i++) {
+        if(array[i].x === x && array[i].y === y)
+        return true;
+    }
+    return false;
+}
 
 
 function init() {
   score = 0;
   direction = 'down';
 
-  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // snakeBody();
   drawSnake();
   console.log(snake);
 
   createFood();
-  gameloop = setInterval(paint, 80);
-
-
-
-  // snakeX += dx;
-  // snakeY += dy;
+  gameloop = setInterval(paint, 100);
 }
 
-// setInterval(draw, 10);
 
 init();
 
 function paint() {
 
-  ctx.fillStyle = 'lightgrey';
+  ctx.fillStyle = '#95c205';
   ctx.fillRect(0, 0, w, h);
   ctx.strokeStyle = 'black';
   ctx.strokeRect(0, 0, w, h);
@@ -171,36 +112,19 @@ function paint() {
 
 
     if (snakeX == -1 || snakeX == w / snakeSize || snakeY == -1 || snakeY == h / snakeSize || checkCollision(snakeX, snakeY, snake)) {
-        //Stop the game.
 
-        //Make the start button enabled again.
-        //Clean up the canvas.
         ctx.clearRect(0, 0, w, h);
         gameloop = clearInterval(gameloop);
-        var restart = window.confirm('your score was ' + score + '. Play again??')
-        if (restart){
-          init();
-        } else{
-          window.close();
-        }
+        // var restart = window.confirm('your score was ' + score + '. Play again??')
+        // if (restart){
+        //   init();
+        // } else{
+        //   window.close();
+        // }
         return;
     }
 
-
-  // if(leftPressed) {
-  //   snakeX--;
-  // }
-  // else if(upPressed) {
-  //   snakeY--;
-  // }
-  // else if (rightPressed) {
-  //   snakeX++;
-  // }
-  // else if (downPressed) {
-  //   snakeY++;
-  // }
   if (snakeX == food.x && snakeY == food.y) {
-        //Create a new square instead of moving the tail.
         var tail = {
             x: snakeX,
             y: snakeY
@@ -223,10 +147,8 @@ function paint() {
         snakeBody(snake[i].x, snake[i].y);
     }
 
-  pizza(food.x,food.y);
-
-
-
+  crumb(food.x,food.y);
+  scoreText();
 
 }
 
