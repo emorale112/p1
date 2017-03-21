@@ -7,13 +7,14 @@ var ctx = canvas.getContext('2d');
 var w = canvas.width;
 var h = canvas.height;
 // define the starting point of the snake
-var snakeX = canvas.width/2;
-var snakeY = canvas.height/2;
+// var snakeX = canvas.width/2;
+// var snakeY = canvas.height/2;
 
 var snake;
 var snakeSize = 10;
 // var dir = 'right';
 var food;
+var score = 0;
 
 // var upPressed = false;
 // var rightPressed = false;
@@ -74,7 +75,7 @@ function snakeBody(x, y) {
 function drawSnake() {
   var length = 4;
   snake = [];
-  for (var i = length; i >= 0; i--) {
+  for (var i = length-1; i >= 0; i--) {
     snake.push({x:i, y:0});
   }
 }
@@ -117,7 +118,17 @@ var createFood = function() {
     }
 
 
+function checkCollision(x, y, array) {
+            for(var i = 0; i < array.length; i++) {
+                if(array[i].x === x && array[i].y === y)
+                return true;
+            }
+            return false;
+        }
+
+
 function init() {
+  score = 0;
   direction = 'down';
 
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -140,6 +151,11 @@ init();
 
 function paint() {
 
+  ctx.fillStyle = 'lightgrey';
+  ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = 'black';
+  ctx.strokeRect(0, 0, w, h);
+
   var snakeX = snake[0].x;
   var snakeY = snake[0].y;
 
@@ -153,6 +169,24 @@ function paint() {
         snakeY++;
     }
 
+
+    if (snakeX == -1 || snakeX == w / snakeSize || snakeY == -1 || snakeY == h / snakeSize || checkCollision(snakeX, snakeY, snake)) {
+        //Stop the game.
+
+        //Make the start button enabled again.
+        //Clean up the canvas.
+        ctx.clearRect(0, 0, w, h);
+        gameloop = clearInterval(gameloop);
+        var restart = window.confirm('your score was ' + score + '. Play again??')
+        if (restart){
+          init();
+        } else{
+          window.close();
+        }
+        return;
+    }
+
+
   // if(leftPressed) {
   //   snakeX--;
   // }
@@ -165,13 +199,24 @@ function paint() {
   // else if (downPressed) {
   //   snakeY++;
   // }
+  if (snakeX == food.x && snakeY == food.y) {
+        //Create a new square instead of moving the tail.
+        var tail = {
+            x: snakeX,
+            y: snakeY
+        };
+        score++;
 
+        //Create new food.
+        createFood();
+    } else {
+        var tail = snake.pop();
+        console.log(tail);
+        tail.x = snakeX;
+        tail.y = snakeY;
+    }
 
-  var tail = snake.pop();
-  tail.x = snakeX;
-  tail.y = snakeY;
-
-  snake.unshift(tail);
+    snake.unshift(tail);
 
 
   for (var i = 0; i < snake.length; i++) {

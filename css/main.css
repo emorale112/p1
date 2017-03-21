@@ -5,8 +5,7 @@
 
 /*creates the game canvas*/
 canvas {
-  /*background: #95c205;*/
-  background: white;
+  background: #95c205;
   display: block;
   margin: 0 auto;
 }
